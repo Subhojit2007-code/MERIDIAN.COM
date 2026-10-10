@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meridian — Everyday essentials, thoughtfully sourced</title>
+  <meta name="description" content="Meridian is a multi-category storefront for electronics, home goods, apparel and accessories. Shop a curated catalogue with fast, secure checkout." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <span class="mark">M</span>
+        <span data-store-name>Meridian</span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="index.html" aria-current="page">Shop</a>
+        <a href="index.html#catalogue" data-scroll>Categories</a>
+        <a href="html/admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <form class="search" role="search" action="index.html" method="get" id="search-form">
+          <input type="search" id="search-input" name="q" placeholder="Search products…" aria-label="Search products" autocomplete="off" />
+          <button type="submit" aria-label="Search">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </form>
+        <a class="icon-btn" href="html/wishlist.html" aria-label="Wishlist">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-9.2-8.6C1.2 8.4 3 5 6.4 5c2 0 3.4 1 4.1 2.3h3c.7-1.3 2.1-2.3 4.1-2.3 3.4 0 5.2 3.4 3.6 6.4C19 15.4 12 20 12 20Z" transform="translate(0 -1)"/></svg>
+          <span class="icon-badge" data-wishlist-count data-count="0">0</span>
+        </a>
+        <a class="icon-btn" href="html/orders.html" aria-label="Your orders">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        </a>
+        <a class="icon-btn" href="html/profile.html" aria-label="Your profile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        </a>
+        <a class="cart-link" href="html/cart.html" aria-label="View cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 7H5.3"/></svg>
+          <span>Cart</span>
+          <span class="cart-badge" data-cart-count data-count="0">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="hero" aria-roledescription="carousel" aria-label="Featured promotions">
+      <div class="hero-slider" id="hero-slider"></div>
+      <button class="hero-arrow prev" id="hero-prev" aria-label="Previous slide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button class="hero-arrow next" id="hero-next" aria-label="Next slide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="dots" id="hero-dots" role="tablist" aria-label="Choose slide"></div>
+    </section>
+
+    <section class="banners" id="banners" aria-label="Promotions"></section>
+
+    <section class="section" id="catalogue">
+      <div class="section-head">
+        <div>
+          <h2>The catalogue</h2>
+          <p><span id="result-count">12</span> products across <span id="collection-count">four</span> collections</p>
+        </div>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
+
+      <div class="grid" id="grid" aria-live="polite"></div>
+
+      <p id="no-results" class="empty" hidden>No products match your search or category.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <p>© 2026 <span data-store-name>Meridian</span> Supply Co. Sample storefront — products and prices are illustrative.</p>
+      </div>
+      <div class="footer-social" aria-label="Social media">
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Meridian on Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg></a>
+        <a href="https://x.com/" target="_blank" rel="noopener" aria-label="Meridian on X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3.1l-6.8 7.8L21.8 21h-6.3l-4.9-6.4L5 21H1.9l7.3-8.3L2.2 3h6.4l4.4 5.9ZM16.4 19.2h1.7L7.7 4.7H5.9Z"/></svg></a>
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Meridian on Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8h3V4.5h-3A4.5 4.5 0 0 0 9.5 9v2.5H7V15h2.5v6H13v-6h3l.5-3.5H13V9a1 1 0 0 1 1-1Z"/></svg></a>
+        <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="Meridian on YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="m10.5 9.5 5 2.5-5 2.5Z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Shop</a>
+        <a href="html/cart.html">Cart</a>
+        <a href="html/wishlist.html">Wishlist</a>
+        <a href="html/admin.html">Admin</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/store.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    let activeCategory = CATEGORIES.includes(params.get("cat")) ? params.get("cat") : "All";
+    let query = (params.get("q") || "").trim().toLowerCase();
+
+    const searchInput = document.getElementById("search-input");
+    searchInput.value = query ? params.get("q") : "";
+
+    function matches(p) {
+      if (activeCategory !== "All" && p.category !== activeCategory) return false;
+      if (!query) return true;
+      const hay = p.name + " " + p.category + " " + p.desc + " " + (p.sku || "") + " " + (Array.isArray(p.tags) ? p.tags.join(" ") : "");
+      return hay.toLowerCase().includes(query);
+    }
+
+    function cardHTML(p) {
+      const badge = p.badge ? `<span class="badge">${p.badge}</span>` : "";
+      const d = productDiscount(p);
+      const now = priceOf(p);
+      const was = d && now !== p.price
+        ? `<span class="was">${money(p.price)}</span>`
+        : (p.was ? `<span class="was">${money(p.was)}</span>` : "");
+      const wished = inWishlist(p.id);
+      return `
+        <article class="card">
+          <a class="card-media" href="html/product.html?id=${p.id}" style="${productMediaStyle(p)}" aria-label="${p.name}">
+            ${badge}
+            ${productMediaIcon(p)}
+          </a>
+          <div class="card-body">
+            <span class="card-cat">${p.category}</span>
+            <a class="card-title" href="html/product.html?id=${p.id}">${p.name}</a>
+            <div class="card-rating">${starsHTML(p.rating, { size: 13, showValue: false })}<span class="rc">${p.rating.toFixed(1)} · ${p.reviewCount}</span></div>
+            <div class="card-foot">
+              <span class="price">${money(now)}${was}</span>
+              <span style="display:flex;gap:6px;align-items:center">
+                <button class="add-btn wish-btn ${wished ? "added" : ""}" data-wish="${p.id}" aria-label="${wished ? "Remove" : "Add"} ${p.name} ${wished ? "from" : "to"} wishlist" aria-pressed="${wished}" title="Wishlist">${wished ? "♥" : "♡"}</button>
+                <button class="add-btn" data-add="${p.id}" aria-label="Add ${p.name} to cart" title="Add to cart">+</button>
+              </span>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function renderFilters() {
+      const wrap = document.getElementById("filters");
+      wrap.innerHTML = CATEGORIES.map((c) =>
+        `<button class="chip" data-cat="${c}" aria-pressed="${c === activeCategory}">${c}</button>`
+      ).join("");
+      wrap.querySelectorAll("[data-cat]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.getAttribute("data-cat");
+          renderFilters();
+          renderGrid();
+        });
+      });
+    }
+
+    function gridBannerHTML() {
+      const g = getGridBanner();
+      if (!g.enabled) return "";
+      const bg = g.image
+        ? ` style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.45)),url('${esc(g.image)}');background-size:cover;background-position:center"`
+        : "";
+      const href = g.linkType === "none" ? "" : bannerHref({ linkType: g.linkType, target: g.target });
+      const cta = (g.ctaLabel && href) ? `<a class="btn btn-light gb-cta" href="${esc(href)}">${esc(g.ctaLabel)}</a>` : "";
+      return `
+        <div class="grid-banner" role="region" aria-label="${esc(g.name)}"${bg}>
+          <div class="gb-inner">
+            <span class="gb-name">${esc(g.name)}</span>
+            ${cta}
+          </div>
+        </div>`;
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById("grid");
+      const list = PRODUCTS.filter(matches);
+      const cards = list.map(cardHTML);
+      if (cards.length >= 4) cards.splice(Math.ceil(cards.length / 2), 0, gridBannerHTML());
+      grid.innerHTML = cards.join("");
+      document.getElementById("result-count").textContent = String(list.length);
+      document.getElementById("collection-count").textContent = String(CATEGORIES.length - 1);
+      document.getElementById("no-results").hidden = list.length !== 0;
+
+      grid.querySelectorAll("[data-add]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-add");
+          addToCart(id, 1);
+          btn.classList.add("added");
+          btn.textContent = "✓";
+          toast(`Added ${getProduct(id).name} to cart`);
+          setTimeout(() => { btn.classList.remove("added"); btn.textContent = "+"; }, 1000);
+        });
+      });
+      grid.querySelectorAll("[data-wish]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-wish");
+          const now = toggleWishlist(id);
+          btn.classList.toggle("added", now);
+          btn.textContent = now ? "♥" : "♡";
+          btn.setAttribute("aria-pressed", String(now));
+          toast(now ? `Saved ${getProduct(id).name} to wishlist` : `Removed ${getProduct(id).name} from wishlist`);
+        });
+      });
+    }
+
+    // Live search on this page; the form also works without JS via ?q=.
+    searchInput.addEventListener("input", () => {
+      query = searchInput.value.trim().toLowerCase();
+      renderGrid();
+    });
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      query = searchInput.value.trim().toLowerCase();
+      renderGrid();
+      document.getElementById("catalogue").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Promotional banners, rendered from the admin-configurable list.
+    const TAG_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h13v8H3zM16 10h3l2 3v2h-5z"/><circle cx="7" cy="17" r="1.6"/><circle cx="17.5" cy="17" r="1.6"/></svg>';
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+    function bannerIcon(b) {
+      if (b.linkType === "category") return iconFor(b.target);
+      if (b.linkType === "product") { const p = getProduct(b.target); return p ? iconFor(p.category) : TAG_ICON; }
+      return TAG_ICON;
+    }
+    function bannerHref(b) {
+      if (b.linkType === "product") return "html/product.html?id=" + encodeURIComponent(b.target);
+      if (b.linkType === "url") return b.target || "#";
+      if (b.linkType === "category") return "index.html?cat=" + encodeURIComponent(b.target);
+      return b.target || "#catalogue";
+    }
+    function renderBanners() {
+      const wrap = document.getElementById("banners");
+      const list = getBanners();
+      wrap.hidden = list.length === 0;
+      wrap.innerHTML = list.map((b) => {
+        const attrs = [];
+        if (b.linkType === "category") attrs.push(`data-banner-cat="${esc(b.target)}"`);
+        if (b.linkType === "scroll") attrs.push("data-scroll");
+        if (b.linkType === "url") attrs.push('target="_blank" rel="noopener"');
+        const img = b.image ? ` style="background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.45)),url('${esc(b.image)}');background-size:cover;background-position:center"` : "";
+        return `<a class="banner banner-${esc(b.theme)}" href="${esc(bannerHref(b))}" ${attrs.join(" ")}${img}>
+          <span class="b-icon" aria-hidden="true">${bannerIcon(b)}</span>
+          <span class="b-kicker">${esc(b.kicker)}</span>
+          <span class="b-title">${esc(b.title)}</span>
+          <span class="b-sub">${esc(b.sub)}</span>
+        </a>`;
+      }).join("");
+    }
+
+    renderBanners();
+
+    // Banner tiles set the category without a reload.
+    document.querySelectorAll("[data-banner-cat]").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        activeCategory = a.getAttribute("data-banner-cat");
+        renderFilters();
+        renderGrid();
+        document.getElementById("catalogue").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // Smooth in-page scrolling for anchor links.
+    document.querySelectorAll("[data-scroll]").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const href = a.getAttribute("href");
+        const hash = href.indexOf("#") >= 0 ? href.slice(href.indexOf("#")) : null;
+        if (hash && document.querySelector(hash)) {
+          e.preventDefault();
+          document.querySelector(hash).scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+
+    renderFilters();
+    renderGrid();
+
+    // Hero (auto-scrolling banner) slides, rendered from the admin slideshow.
+    function slideHref(s) {
+      if (s.linkType === "product") return "html/product.html?id=" + encodeURIComponent(s.target);
+      if (s.linkType === "category") return "index.html?cat=" + encodeURIComponent(s.target);
+      if (s.linkType === "url") return s.target || "#";
+      return "";
+    }
+    function renderHeroSlides() {
+      const wrap = document.getElementById("hero-slider");
+      const list = getHeroSlides();
+      wrap.innerHTML = list.map((s, i) => {
+        const bg = s.image
+          ? `background-image:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.42)),url('${esc(s.image)}');background-size:cover;background-position:center`
+          : `background:linear-gradient(120deg, ${esc(s.grad[0])}, ${esc(s.grad[1])})`;
+        const href = slideHref(s);
+        const ext = s.linkType === "url" ? ' target="_blank" rel="noopener"' : "";
+        const copy = (s.kicker || s.title || s.sub)
+          ? `<div class="slide-copy">${s.kicker ? `<span class="s-kicker">${esc(s.kicker)}</span>` : ""}${s.title ? `<h2 class="s-title">${esc(s.title)}</h2>` : ""}${s.sub ? `<p class="s-sub">${esc(s.sub)}</p>` : ""}${href ? `<a class="btn btn-light" href="${esc(href)}"${ext}>Shop now</a>` : ""}</div>`
+          : (href ? `<a class="slide-link" href="${esc(href)}"${ext} aria-label="Open promotion"></a>` : "");
+        return `<div class="slide${i === 0 ? " active" : ""}" style="${bg}" role="group" aria-label="${i + 1} of ${list.length}">${copy}</div>`;
+      }).join("");
+    }
+    renderHeroSlides();
+
+    // Hero carousel: 6 auto-advancing slides with animated dot indicators.
+    (function initHero() {
+      const hero = document.getElementById("hero");
+      const slides = Array.from(document.getElementById("hero-slider").querySelectorAll(".slide"));
+      const dotsWrap = document.getElementById("hero-dots");
+      const INTERVAL = 5000;
+      let index = 0;
+      let timer = null;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement("button");
+        dot.className = "dot";
+        dot.setAttribute("role", "tab");
+        dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+        dot.addEventListener("click", () => { go(i); restart(); });
+        dotsWrap.appendChild(dot);
+      });
+      const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
+
+      function render() {
+        slides.forEach((s, i) => s.classList.toggle("active", i === index));
+        dots.forEach((d, i) => {
+          d.classList.remove("active");
+          d.setAttribute("aria-selected", String(i === index));
+        });
+        void dots[index].offsetWidth; // force reflow so the fill animation restarts
+        dots[index].classList.add("active");
+      }
+      function go(i) { index = (i + slides.length) % slides.length; render(); }
+      function next() { go(index + 1); }
+      function prev() { go(index - 1); }
+      function restart() { clearInterval(timer); timer = setInterval(next, INTERVAL); }
+
+      document.getElementById("hero-next").addEventListener("click", () => { next(); restart(); });
+      document.getElementById("hero-prev").addEventListener("click", () => { prev(); restart(); });
+      hero.addEventListener("mouseenter", () => clearInterval(timer));
+      hero.addEventListener("mouseleave", restart);
+
+      render();
+      restart();
+    })();
+  </script>
+</body>
+</html>

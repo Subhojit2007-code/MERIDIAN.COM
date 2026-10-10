@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product — Meridian</title>
+  <meta name="description" content="Product details, ratings and reviews at Meridian." />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="mark">M</span><span data-store-name>Meridian</span></a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="../index.html">Shop</a>
+        <a href="../index.html#catalogue" data-scroll>Categories</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <form class="search" role="search" action="../index.html" method="get" id="search-form">
+          <input type="search" id="search-input" name="q" placeholder="Search products…" aria-label="Search products" autocomplete="off" />
+          <button type="submit" aria-label="Search">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </form>
+        <a class="icon-btn" href="wishlist.html" aria-label="Wishlist">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-9.2-8.6C1.2 8.4 3 5 6.4 5c2 0 3.4 1 4.1 2.3h3c.7-1.3 2.1-2.3 4.1-2.3 3.4 0 5.2 3.4 3.6 6.4C19 15.4 12 20 12 20Z" transform="translate(0 -1)"/></svg>
+          <span class="icon-badge" data-wishlist-count data-count="0">0</span>
+        </a>
+        <a class="icon-btn" href="orders.html" aria-label="Your orders">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        </a>
+        <a class="icon-btn" href="profile.html" aria-label="Your profile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        </a>
+        <a class="cart-link" href="cart.html" aria-label="View cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 7H5.3"/></svg>
+          <span>Cart</span>
+          <span class="cart-badge" data-cart-count data-count="0">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="product-root">
+    <p class="empty" id="loading">Loading product…</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div><p>© 2026 <span data-store-name>Meridian</span> Supply Co. Sample storefront — products and prices are illustrative.</p></div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="../index.html">Shop</a>
+        <a href="cart.html">Cart</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/store.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    const root = document.getElementById("product-root");
+
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function cardHTML(x) {
+      const d = productDiscount(x);
+      const now = priceOf(x);
+      const was = d && now !== x.price ? `<span class="was">${money(x.price)}</span>` : "";
+      return `
+          <article class="card">
+            <a class="card-media" href="product.html?id=${x.id}" style="${productMediaStyle(x)}">${productMediaIcon(x)}</a>
+            <div class="card-body">
+              <span class="card-cat">${esc(x.category)}</span>
+              <a class="card-title" href="product.html?id=${x.id}">${esc(x.name)}</a>
+              <div class="card-foot"><span class="price">${money(now)}${was}</span>
+                <button class="add-btn" data-add="${x.id}" aria-label="Add ${esc(x.name)} to cart" title="Add to cart">+</button>
+              </div>
+            </div>
+          </article>`;
+    }
+
+    function videoEmbed(src) {
+      const s = String(src || "").trim();
+      if (!s) return "";
+      let m = s.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+      if (m) return `<div class="video-frame"><iframe src="https://www.youtube.com/embed/${esc(m[1])}" title="Product video" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe></div>`;
+      m = s.match(/vimeo\.com\/(\d+)/);
+      if (m) return `<div class="video-frame"><iframe src="https://player.vimeo.com/video/${esc(m[1])}" title="Product video" loading="lazy" allowfullscreen></iframe></div>`;
+      return `<div class="video-frame"><video controls preload="metadata" src="${esc(s)}"></video></div>`;
+    }
+
+    function ratingDistribution(reviews, rating) {
+      const dist = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      if (reviews && reviews.length) {
+        reviews.forEach((r) => { const b = Math.round(r.rating); if (dist[b] != null) dist[b]++; });
+      } else {
+        const b = Math.round(rating); if (dist[b] != null) dist[b] = 1;
+      }
+      const total = Object.values(dist).reduce((a, b) => a + b, 0) || 1;
+      return { dist, total };
+    }
+
+    function reviewHTML(r) {
+      return `
+        <article class="review">
+          <div class="review-top">
+            <span class="review-who">${esc(r.name)}</span>
+            <span class="review-date">${esc(r.date)}</span>
+          </div>
+          ${starsHTML(r.rating, { size: 14, showValue: false })}
+          <h4>${esc(r.title)}</h4>
+          <p>${esc(r.body)}</p>
+        </article>`;
+    }
+
+    function render() {
+      const p = getProduct(id);
+      if (!p) {
+        root.innerHTML = `<div class="result-hero"><div class="mark">?</div><h2>Product not found</h2><p class="muted">The item you're looking for isn't in the catalogue.</p><p style="margin-top:16px"><a class="btn btn-primary" href="../index.html">Back to shop</a></p></div>`;
+        return;
+      }
+      document.title = `${p.name} — Meridian`;
+      const wished = inWishlist(p.id);
+      const { dist, total } = ratingDistribution(p.reviews, p.rating);
+      const bars = [5, 4, 3, 2, 1].map((star) => {
+        const pct = Math.round((dist[star] / total) * 100);
+        return `<div class="bar-row"><span>${star} ★</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%"></span></span><span>${pct}%</span></div>`;
+      }).join("");
+
+      const related = PRODUCTS.filter((x) => x.id !== p.id)
+        .sort((a, b) => (a.category === p.category ? -1 : 0) - (b.category === p.category ? -1 : 0))
+        .slice(0, 4)
+        .map(cardHTML).join("");
+
+      const specRows = getAttributes()
+        .map((a) => {
+          const raw = p.attrs ? p.attrs[a.id] : "";
+          const value = Array.isArray(raw) ? raw.map((x) => String(x)).filter(Boolean).join(", ") : (raw != null ? String(raw) : "");
+          return { name: a.name, value };
+        })
+        .filter((r) => r.value.trim());
+      const specsHTML = specRows.length ? `
+        <section class="specs">
+          <div class="section-head"><div><h2>Product details</h2></div></div>
+          <div class="table-wrap"><table class="spec-table"><tbody>
+            ${specRows.map((r) => `<tr><th>${esc(r.name)}</th><td>${esc(r.value)}</td></tr>`).join("")}
+          </tbody></table></div>
+        </section>` : "";
+
+      const vgroups = productVariantGroups(p);
+      const selection = {};
+      vgroups.forEach((g) => { selection[g.id] = g.options[0]; });
+      const variantsHTML = vgroups.length ? `
+        <div class="variants">
+          ${vgroups.map((g) => `
+            <div class="variant-group">
+              <span class="variant-name">${esc(g.name)}: <strong data-vlabel="${esc(g.id)}">${esc(g.options[0])}</strong></span>
+              <div class="variant-pills" role="group" aria-label="${esc(g.name)}">
+                ${g.options.map((o, oi) => `<button type="button" class="variant-pill${oi === 0 ? " selected" : ""}" data-vgroup="${esc(g.id)}" data-vval="${esc(o)}" aria-pressed="${oi === 0}">${esc(o)}</button>`).join("")}
+              </div>
+            </div>`).join("")}
+        </div>` : "";
+
+      const disc = productDiscount(p);
+      const price = priceOf(p);
+      const stock = productStock(p);
+      const minQty = productMinQty(p);
+      const unit = p.unit || "pc";
+      const outOfStock = stock === 0;
+      const qtyMax = stock == null ? MAX_QUANTITY : Math.min(MAX_QUANTITY, Math.max(minQty, stock));
+
+      const mediaSrcs = [];
+      [p.thumb, p.image].concat(p.gallery || []).forEach((s) => { if (s && mediaSrcs.indexOf(s) < 0) mediaSrcs.push(s); });
+      const galleryHTML = mediaSrcs.length > 1 ? `
+        <div class="thumb-strip" id="detail-thumbs">
+          ${mediaSrcs.map((s, i) => `<button type="button" class="thumb-item${i === 0 ? " selected" : ""}" data-src="${esc(s)}" aria-label="Show image ${i + 1}"><img src="${esc(s)}" alt="" /></button>`).join("")}
+        </div>` : "";
+
+      const tagsHTML = p.tags && p.tags.length ? `<div class="tag-row">${p.tags.map((t) => `<span class="tag-chip">${esc(t)}</span>`).join("")}</div>` : "";
+      const stockHTML = outOfStock
+        ? `<span class="stock out">Out of stock</span>`
+        : (stock != null ? `<span class="stock">${stock} ${esc(unit)} in stock</span>` : `<span class="stock in">In stock</span>`);
+      const policies = [];
+      if (p.refund && p.refund.enabled) policies.push({ label: "Refundable", note: p.refund.note });
+      if (p.warranty && p.warranty.enabled) policies.push({ label: "Warranty", note: p.warranty.note });
+      const policyHTML = policies.length ? `<div class="policy-row">${policies.map((x) => `<div class="policy"><strong>${esc(x.label)}</strong>${x.note ? `<span>${esc(x.note)}</span>` : ""}</div>`).join("")}</div>` : "";
+      const pdfHTML = p.specPdf ? `<a class="pdf-link" href="${esc(p.specPdf)}" target="_blank" rel="noopener" download>📄 Download specifications (PDF)</a>` : "";
+      const videosHTML = p.videos && p.videos.length ? `
+        <section class="videos">
+          <div class="section-head"><div><h2>Videos</h2></div></div>
+          <div class="video-grid">${p.videos.map(videoEmbed).join("")}</div>
+        </section>` : "";
+      const freqItems = (p.frequentlyBought || []).map((fid) => getProduct(fid)).filter(Boolean);
+      const freqHTML = freqItems.length ? `
+        <section class="related">
+          <div class="section-head"><div><h2>Frequently bought together</h2></div></div>
+          <div class="grid">${freqItems.map(cardHTML).join("")}</div>
+        </section>` : "";
+
+      root.innerHTML = `
+        <section class="detail">
+          <div class="detail-media-col">
+            <div class="detail-media" id="detail-media" style="${productMediaStyle(p)}">
+              ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ""}
+              ${productMediaIcon(p)}
+            </div>
+            ${galleryHTML}
+          </div>
+          <div class="detail-info">
+            <span class="card-cat">${esc(p.category)}</span>
+            <h1>${esc(p.name)}</h1>
+            <div class="detail-rating">
+              ${starsHTML(p.rating, { size: 17 })}
+              <a href="#reviews">${p.reviewCount} reviews</a>
+            </div>
+            <div class="detail-price">${money(price)}${disc ? `<span class="was">${money(p.price)}</span><span class="save-pill">${disc.type === "percent" ? disc.value + "% off" : "Save " + money(disc.value)}</span>` : (p.was ? `<span class="was">${money(p.was)}</span>` : "")}</div>
+            ${stockHTML}
+            <p class="detail-blurb">${esc(p.blurb)}</p>
+            ${tagsHTML}
+            ${variantsHTML}
+            <div class="qty-row">
+              <div class="stepper">
+                <button type="button" id="qty-minus" aria-label="Decrease quantity" ${outOfStock ? "disabled" : ""}>−</button>
+                <input id="qty" type="number" value="${minQty}" min="${minQty}" max="${qtyMax}" step="1" aria-label="Quantity" ${outOfStock ? "disabled" : ""} />
+                <button type="button" id="qty-plus" aria-label="Increase quantity" ${outOfStock ? "disabled" : ""}>+</button>
+              </div>
+              <button class="btn btn-primary" id="add-cart" ${outOfStock ? "disabled" : ""}>${outOfStock ? "Out of stock" : "Add to cart"}</button>
+              <button class="btn btn-outline wish-btn ${wished ? "added" : ""}" id="wish" aria-pressed="${wished}">${wished ? "♥ Saved" : "♡ Wishlist"}</button>
+            </div>
+            ${minQty > 1 ? `<p class="hint">Minimum order: ${minQty} ${esc(unit)}.</p>` : ""}
+            <button class="btn btn-outline" id="buy-now" style="width:fit-content" ${outOfStock ? "disabled" : ""}>Buy now</button>
+            ${p.features && p.features.length ? `<ul class="feature-list">${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+            ${policyHTML}
+            ${pdfHTML}
+            <div class="meta-list">
+              <span>SKU: ${esc(p.sku || p.id)}</span>
+              <span>Sold per ${esc(unit)}.</span>
+              <span>Free shipping on orders over ${money(freeShippingThreshold())}.</span>
+              <span id="checkout-note"></span>
+            </div>
+          </div>
+        </section>
+        ${specsHTML}
+        ${videosHTML}
+
+        <section class="reviews" id="reviews">
+          <div class="section-head"><div><h2>Ratings &amp; reviews</h2></div></div>
+          <div class="reviews-head">
+            <div>
+              <div class="rating-big">${p.rating.toFixed(1)}</div>
+              ${starsHTML(p.rating, { size: 16, showValue: false })}
+              <p class="muted" style="margin-top:6px">${p.reviewCount} global ratings</p>
+            </div>
+            <div class="bars">${bars}</div>
+          </div>
+          <div class="review-list">${(p.reviews || []).map(reviewHTML).join("") || '<p class="empty">No written reviews yet.</p>'}</div>
+        </section>
+
+        <section class="related">
+          <div class="section-head"><div><h2>You may also like</h2></div></div>
+          <div class="grid">${related}</div>
+        </section>
+        ${freqHTML}`;
+
+      // Qty stepper
+      const qtyEl = document.getElementById("qty");
+      const clampQty = () => { let v = parseInt(qtyEl.value, 10); if (!Number.isFinite(v) || v < minQty) v = minQty; if (v > qtyMax) v = qtyMax; qtyEl.value = String(v); return v; };
+      document.getElementById("qty-minus").addEventListener("click", () => { qtyEl.value = String(Math.max(minQty, (parseInt(qtyEl.value, 10) || minQty) - 1)); });
+      document.getElementById("qty-plus").addEventListener("click", () => { qtyEl.value = String(Math.min(qtyMax, (parseInt(qtyEl.value, 10) || minQty) + 1)); });
+      qtyEl.addEventListener("change", clampQty);
+
+      const mediaEl = document.getElementById("detail-media");
+      root.querySelectorAll("#detail-thumbs .thumb-item").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-src");
+          if (!src || !mediaEl) return;
+          mediaEl.style.backgroundImage = `url('${src.replace(/'/g, "%27")}')`;
+          mediaEl.style.backgroundSize = "cover";
+          mediaEl.style.backgroundPosition = "center";
+          mediaEl.style.background = `url('${src.replace(/'/g, "%27")}') center/cover no-repeat`;
+          root.querySelectorAll("#detail-thumbs .thumb-item").forEach((b) => b.classList.toggle("selected", b === btn));
+        });
+      });
+
+      root.querySelectorAll(".variant-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const gid = btn.getAttribute("data-vgroup");
+          const val = btn.getAttribute("data-vval");
+          selection[gid] = val;
+          root.querySelectorAll('.variant-pill[data-vgroup="' + gid + '"]').forEach((b) => {
+            const on = b === btn;
+            b.classList.toggle("selected", on);
+            b.setAttribute("aria-pressed", String(on));
+          });
+          const lbl = root.querySelector('[data-vlabel="' + gid + '"]');
+          if (lbl) lbl.textContent = val;
+        });
+      });
+
+      document.getElementById("add-cart").addEventListener("click", () => {
+        const n = clampQty();
+        addToCart(p.id, n, selection);
+        const label = variantLabel(p, selection);
+        toast(`Added ${p.name}${label ? " (" + label + ")" : ""} to cart`);
+      });
+      const wishBtn = document.getElementById("wish");
+      wishBtn.addEventListener("click", () => {
+        const now = toggleWishlist(p.id);
+        wishBtn.classList.toggle("added", now);
+        wishBtn.textContent = now ? "♥ Saved" : "♡ Wishlist";
+        wishBtn.setAttribute("aria-pressed", String(now));
+        toast(now ? `Saved ${p.name} to wishlist` : `Removed ${p.name} from wishlist`);
+      });
+      document.getElementById("buy-now").addEventListener("click", () => {
+        addToCart(p.id, clampQty(), selection);
+        location.href = "cart.html";
+      });
+
+      root.querySelectorAll("[data-add]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const rid = btn.getAttribute("data-add");
+          addToCart(rid, 1);
+          btn.classList.add("added"); btn.textContent = "✓";
+          toast(`Added ${getProduct(rid).name} to cart`);
+          setTimeout(() => { btn.classList.remove("added"); btn.textContent = "+"; }, 1000);
+        });
+      });
+    }
+
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      const q = document.getElementById("search-input").value.trim();
+      e.preventDefault();
+      location.href = "../index.html?q=" + encodeURIComponent(q);
+    });
+    document.querySelectorAll("[data-scroll]").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const href = a.getAttribute("href");
+        const hash = href.indexOf("#") >= 0 ? href.slice(href.indexOf("#")) : null;
+        if (hash) { e.preventDefault(); location.href = href; }
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your cart — Meridian</title>
+  <meta name="description" content="Review your cart and check out securely at Meridian." />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="mark">M</span><span data-store-name>Meridian</span></a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="../index.html">Shop</a>
+        <a href="../index.html#catalogue" data-scroll>Categories</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <form class="search" role="search" action="../index.html" method="get" id="search-form">
+          <input type="search" id="search-input" name="q" placeholder="Search products…" aria-label="Search products" autocomplete="off" />
+          <button type="submit" aria-label="Search">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </form>
+        <a class="icon-btn" href="wishlist.html" aria-label="Wishlist">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-9.2-8.6C1.2 8.4 3 5 6.4 5c2 0 3.4 1 4.1 2.3h3c.7-1.3 2.1-2.3 4.1-2.3 3.4 0 5.2 3.4 3.6 6.4C19 15.4 12 20 12 20Z" transform="translate(0 -1)"/></svg>
+          <span class="icon-badge" data-wishlist-count data-count="0">0</span>
+        </a>
+        <a class="icon-btn" href="orders.html" aria-label="Your orders">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        </a>
+        <a class="icon-btn" href="profile.html" aria-label="Your profile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        </a>
+        <a class="cart-link" href="cart.html" aria-label="View cart" aria-current="page">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 7H5.3"/></svg>
+          <span>Cart</span>
+          <span class="cart-badge" data-cart-count data-count="0">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="page-head"><h1>Your cart</h1></div>
+    <div class="cart-layout">
+      <div>
+        <div class="cart-lines" id="cart-lines"></div>
+        <p class="empty" id="cart-empty" hidden>Your cart is empty. <a href="../index.html" style="color:var(--accent);font-weight:600">Browse the catalogue</a>.</p>
+      </div>
+      <aside class="summary" id="summary" hidden>
+        <h3>Summary</h3>
+        <div class="sum-row"><span>Subtotal</span><span id="sum-subtotal">—</span></div>
+        <div class="sum-row"><span>Shipping</span><span id="sum-shipping">—</span></div>
+        <div class="sum-row total"><span>Total</span><span id="sum-total">—</span></div>
+        <div class="free-ship-hint" id="free-ship-hint"></div>
+        <button class="btn btn-primary checkout-btn" id="checkout">Checkout securely</button>
+        <div id="checkout-notice"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div><p>© 2026 <span data-store-name>Meridian</span> Supply Co. Sample storefront — products and prices are illustrative.</p></div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="../index.html">Shop</a>
+        <a href="wishlist.html">Wishlist</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/store.js"></script>
+  <script>
+    const CHECKOUT_URL = "/functions/v1/app/create-checkout-session";
+    const linesEl = document.getElementById("cart-lines");
+    const emptyEl = document.getElementById("cart-empty");
+    const summaryEl = document.getElementById("summary");
+    const noticeEl = document.getElementById("checkout-notice");
+
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function render() {
+      const entries = cartEntries();
+      linesEl.innerHTML = entries.map((e) => {
+        const p = e.product;
+        const k = e.key;
+        const unit = priceOf(p);
+        const minQ = productMinQty(p);
+        return `
+          <article class="cart-line">
+            <a class="line-media" href="product.html?id=${p.id}" style="${productMediaStyle(p)}">${productMediaIcon(p)}</a>
+            <div class="line-info">
+              <span class="card-cat">${esc(p.category)}</span>
+              <a class="line-title" href="product.html?id=${p.id}">${esc(p.name)}</a>
+              ${e.variantLabel ? `<span class="line-variant">${esc(e.variantLabel)}</span>` : ""}
+              <span class="muted">${money(unit)}${p.unit ? " / " + esc(p.unit) : ""} each</span>
+              <div class="line-actions">
+                <div class="stepper">
+                  <button type="button" data-dec="${k}" aria-label="Decrease quantity">−</button>
+                  <input type="number" data-qty="${k}" value="${e.quantity}" min="${minQ}" max="${MAX_QUANTITY}" aria-label="Quantity for ${esc(p.name)}" />
+                  <button type="button" data-inc="${k}" aria-label="Increase quantity">+</button>
+                </div>
+                <button class="link-btn" data-remove="${k}">Remove</button>
+              </div>
+            </div>
+            <div class="line-total">${money(unit * e.quantity)}</div>
+          </article>`;
+      }).join("");
+
+      const has = entries.length > 0;
+      emptyEl.hidden = has;
+      summaryEl.hidden = !has;
+
+      const subtotal = cartSubtotal();
+      const threshold = freeShippingThreshold();
+      const shipping = subtotal >= threshold ? 0 : SHIPPING_FLAT;
+      document.getElementById("sum-subtotal").textContent = money(subtotal);
+      document.getElementById("sum-shipping").textContent = shipping === 0 ? "Free" : money(shipping);
+      document.getElementById("sum-total").textContent = money(subtotal + shipping);
+      const hint = document.getElementById("free-ship-hint");
+      if (shipping === 0) hint.textContent = "You've unlocked free shipping.";
+      else hint.textContent = `Add ${money(threshold - subtotal)} more for free shipping.`;
+
+      bind();
+    }
+
+    function bind() {
+      linesEl.querySelectorAll("[data-inc]").forEach((b) => b.addEventListener("click", () => {
+        const key = b.getAttribute("data-inc"); const cur = readCart()[key] || 0; setQty(key, cur + 1); render();
+      }));
+      linesEl.querySelectorAll("[data-dec]").forEach((b) => b.addEventListener("click", () => {
+        const key = b.getAttribute("data-dec"); const cur = readCart()[key] || 0; setQty(key, cur - 1); render();
+      }));
+      linesEl.querySelectorAll("[data-remove]").forEach((b) => b.addEventListener("click", () => {
+        removeFromCart(b.getAttribute("data-remove")); toast("Removed from cart"); render();
+      }));
+      linesEl.querySelectorAll("[data-qty]").forEach((inp) => inp.addEventListener("change", () => {
+        const key = inp.getAttribute("data-qty"); let v = parseInt(inp.value, 10);
+        if (!Number.isFinite(v) || v < 1) v = 1; if (v > MAX_QUANTITY) v = MAX_QUANTITY;
+        setQty(key, v); render();
+      }));
+    }
+
+    document.getElementById("checkout").addEventListener("click", async (ev) => {
+      const btn = ev.currentTarget;
+      noticeEl.innerHTML = "";
+      // Aggregate by base product id: the checkout function prices per id, and
+      // different variants of one product share the same server price.
+      const agg = new Map();
+      cartEntries().forEach((e) => {
+        const id = e.product.id;
+        agg.set(id, Math.min(MAX_QUANTITY, (agg.get(id) || 0) + e.quantity));
+      });
+      const items = Array.from(agg, ([id, quantity]) => ({ id, quantity }));
+      if (!items.length) return;
+      btn.disabled = true; btn.textContent = "Redirecting…";
+      try {
+        const res = await fetch(CHECKOUT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({ items }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok && data.url) { location.href = data.url; return; }
+        const msg = data.code === "service_not_configured"
+          ? "Payments aren't configured on this site yet. Add the STRIPE_SECRET_KEY in Sites Settings to enable checkout."
+          : (data.message || "Checkout couldn't be started. Please try again.");
+        noticeEl.innerHTML = `<div class="notice warn">${esc(msg)}</div>`;
+      } catch {
+        noticeEl.innerHTML = `<div class="notice warn">Couldn't reach checkout. Check your connection and try again.</div>`;
+      } finally {
+        btn.disabled = false; btn.textContent = "Checkout securely";
+      }
+    });
+
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      const q = document.getElementById("search-input").value.trim();
+      e.preventDefault();
+      location.href = "../index.html?q=" + encodeURIComponent(q);
+    });
+
+    render();
+  </script>
+</body>
+</html>

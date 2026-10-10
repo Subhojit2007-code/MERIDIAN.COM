@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout cancelled — Meridian</title>
+  <meta name="description" content="Your checkout was cancelled at Meridian." />
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html"><span class="mark">M</span><span data-store-name>Meridian</span></a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="../index.html">Shop</a>
+        <a href="../index.html#catalogue" data-scroll>Categories</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="header-actions">
+        <form class="search" role="search" action="../index.html" method="get" id="search-form">
+          <input type="search" id="search-input" name="q" placeholder="Search products…" aria-label="Search products" autocomplete="off" />
+          <button type="submit" aria-label="Search">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </button>
+        </form>
+        <a class="icon-btn" href="wishlist.html" aria-label="Wishlist">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-9.2-8.6C1.2 8.4 3 5 6.4 5c2 0 3.4 1 4.1 2.3h3c.7-1.3 2.1-2.3 4.1-2.3 3.4 0 5.2 3.4 3.6 6.4C19 15.4 12 20 12 20Z" transform="translate(0 -1)"/></svg>
+          <span class="icon-badge" data-wishlist-count data-count="0">0</span>
+        </a>
+        <a class="icon-btn" href="orders.html" aria-label="Your orders">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        </a>
+        <a class="icon-btn" href="profile.html" aria-label="Your profile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        </a>
+        <a class="cart-link" href="cart.html" aria-label="View cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L21 7H5.3"/></svg>
+          <span>Cart</span>
+          <span class="cart-badge" data-cart-count data-count="0">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="result-hero">
+      <div class="mark" style="background:rgba(180,35,24,.1);color:var(--danger)">✕</div>
+      <h1>Checkout cancelled</h1>
+      <p class="muted">No payment was taken. Your cart is saved exactly as you left it.</p>
+      <p style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-primary" href="cart.html">Return to cart</a>
+        <a class="btn btn-outline" href="../index.html">Continue shopping</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div><p>© 2026 <span data-store-name>Meridian</span> Supply Co. Sample storefront — products and prices are illustrative.</p></div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="../index.html">Shop</a>
+        <a href="cart.html">Cart</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/store.js"></script>
+  <script>
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      const q = document.getElementById("search-input").value.trim();
+      e.preventDefault(); location.href = "../index.html?q=" + encodeURIComponent(q);
+    });
+  </script>
+</body>
+</html>

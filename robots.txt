@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /html/admin.html
+Disallow: /html/login.html
+Disallow: /html/profile.html
+Disallow: /html/cart.html
+Disallow: /html/checkout-address.html
+Disallow: /html/checkout-payment.html
+Disallow: /html/checkout-success.html
+Disallow: /html/checkout-cancel.html
+Disallow: /html/orders.html
+Disallow: /html/wishlist.html
+
+Sitemap: https://meridian-store-1960f2kw1jk.qoder.website/sitemap.xml
